@@ -1,0 +1,143 @@
+<!-- Michael Bernstein
+Programming I, M 11:00AM W 9:30AM
+Project 3 Text Adventure-->
+<html><head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta name="author" content="Michael Bernstein">
+   <title>Text Adventure</title>
+   <script type="text/JavaScript">
+   		 var scoreKeep = 0;
+     	 var upCheck = 0;
+     	 var leftCheck = 0;
+    	 var rightCheck = 0;
+      	 var downCheck = 0;
+
+	function button_movement_Up() {
+        	if (upCheck == 0) {
+				var msg = "You head north, and find Dyson. Dyson is a terrible place that is too cold in the winter and too hot in the summer.   Some of the business professors here are the worst professors out there, such as Dr. Lee or Professor Stephen. +5 exploration points!";
+					txtArea(msg);
+		   			scoreKeep += 5;
+	   				upCheck = 1;
+				}
+			else if (upCheck == 1) {
+				var msg="Second location 10 points!";
+				var nbutton = document.getElementById("northButton");
+					txtArea(msg);
+					scoreKeep += 5;
+					nbutton.setAttribute('disabled', 'disabled');
+        		}
+				}
+
+	function button_movement_Left() {
+		var msg = "You find yourself wandering west, and you accidentally stumble onto the cafeteria. The hamburgers are like hockey pucks, and the pizza is like wax paper. This is a place you want to avoid. +5 exploration points!";
+		var wbutton = document.getElementById("westButton");
+		txtArea(msg);
+			if(leftCheck == 0) {
+				scoreKeep += 5;
+				leftCheck = 1;
+				}
+			else if (leftCheck == 1) {
+				var wbutton = document.getElementById("westButton");
+				wbutton.setAttribute('disabled', 'disabled');
+				}
+				}
+
+	function button_movement_Right() {
+		var msg = "Looking to the east, you see the Hancock building. It is brand new, and full of computer science or math classes where the classes are very serious and you might actually use in your career. +5 exploration points!";
+		var ebutton = document.getElementById("eastButton");
+		txtArea(msg);
+			if(rightCheck == 0) {
+				scoreKeep += 5;
+				rightCheck = 1;
+				}
+			else if (rightCheck == 1) {
+				var ebutton = document.getElementById("eastButton");
+				ebutton.setAttribute('disabled', 'disabled');
+				}
+				}
+
+	function button_movement_Down() {
+        	if (downCheck == 0) {
+				var msg = "Facing south, you find Gartland. Gartland used to be section Eight housing for the homeless until it was purchased from the city of Poughkeepsie by Marist. Somehow, its still some of the best housing! +5 exploration points!";
+					txtArea(msg);
+		   			scoreKeep += 5;
+	   				downCheck = 1;
+				}
+			else if (downCheck == 1) {
+				var msg="South of Gartland we find Fern Tor. This is un-used forested space sourrounding Marist that the college for some reason hasn't used to build new housing yet.";
+				var sbutton = document.getElementById("southButton");
+					txtArea(msg);
+					scoreKeep += 5;
+					sbutton.setAttribute('disabled', 'disabled');
+        		}
+				}
+
+
+	function txtArea(msg){
+	 	var text = document.getElementById("textarea");
+	   	text.value = msg + "\n" + "\n" + text.value;
+	}
+
+	function directText() {
+		var directionValue = document.getElementById("direction");
+		var msg = "The valid directions are N, S, E or W in upper or lower case.";
+			if (directionValue.value == "N" || directionValue.value == "n")
+				button_movement_Up();
+			else if (directionValue.value == "S" || directionValue.value == "s")
+				button_movement_Down();
+			else if (directionValue.value == "E" || directionValue.value == "e")
+				button_movement_Right();
+			else if (directionValue.value == "W" || directionValue.value == "w")
+				button_movement_Left();
+			else
+				txtArea(msg);
+	}
+  </script>
+  </head>
+  <body>
+	<h1>Text Adventure in Marist College</h1>
+	<textarea class="textarea" id="textarea" rows="25" cols="60">Welcome
+	to Marist College. At Marist College, you will find wild red foxes,
+	giant man-eating badgers, and angry security guards.However,  keep in
+	mind that you can recieve a lot of good loot from places such as the
+	Hancock, the cafeteria, and Dyson. At the end of your journey, maybe you
+	will get a business degree and end up a systems analyst that works 80
+	hours per week! Or maybe you will suffer an even worse fate, and end up a
+	sports communication major that works at Burger King! Explore campus
+	and find out.</textarea>
+
+
+	<p style="text-indent: 275px">
+	<input id="northButton" value="North" onclick="button_movement_Up();" type="button">
+	</p>
+
+    <p style="text-indent: 250px">
+	<input id="westButton" value="West" onclick="button_movement_Left();" type="button">
+	<input id="eastButton" value="East" onclick="button_movement_Right();" type="button">
+	</p>
+
+	<p style="text-indent: 275px">
+	<input id="southButton" value="South" onclick="button_movement_Down();" type="button">
+	</p>
+
+	<p>
+	<label for="direction">Enter Direction:</label>
+	<input name="direction" id="direction" maxlength="1" size="1" type="text">
+	<input value="go" onclick="directText()" type="button">
+	</p>
+
+	<p>
+    <input value="Check Score" onclick="alert(scoreKeep);" type="button">
+	</p>
+
+	<p class="mailto">
+	<a href="mailto:michael.bernstein1@marist.edu">send me an e-mail!</a>
+	</p>
+
+   	<p class="validator">
+	<a href="http://validator.w3.org/#validate_by_input">check validator!</a>
+    </p>
+
+
+
+</body></html>
