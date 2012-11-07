@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+
+<!-- Michael Bernstein
+Programming I, M 11:00AM W 9:30AM
+Project 2 Text Adventure-->
+
+<head>
+   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+   <meta name="author" content="Michael Bernstein" />
+   	<title>Text Adventure</title>
+   	<script type="text/JavaScript">
+
+      var scoreKeep = 0;
+      var upCheck = false;
+      var leftCheck = false;
+      var rightCheck = false;
+      var downCheck = false;
+
+	function button_movement_Up(){
+		var msg = "You head north, and find Dyson. Dyson is a terrible place that is too cold in the winter and too hot in the summer. Some of the business professors here are the worst professors out there, such as Dr. Lee or Professor Stephen. +10 exploration points!";
+        txtArea(msg);
+        if(!upCheck){
+		   scoreKeep += 10;
+		   upCheck = true;
+        }
+	}
+
+	function button_movement_Left() {
+		var msg = "You find yourself wandering west, and you accidentally stumble onto the cafeteria. The hamburgers are like hockey pucks, and the pizza is like wax paper. This is a place you want to avoid. +10 exploration points!";
+        txtArea(msg);
+        if(!leftCheck){
+		scoreKeep += 10;
+		leftCheck = true;
+        }
+	}
+
+	function button_movement_Right() {
+        var msg = "Looking to the east, you see the Hancock building. It is brand new, and full of computer science or math classes where the classes are very serious and you might actually use in your career. +10 exploration points!";
+        txtArea(msg);
+        if(!rightCheck){
+		scoreKeep += 10;
+		rightCheck = true;
+		}
+	}
+
+    function button_movement_Down() {
+		var msg =  "Facing south, you find Gartland. Gartland used to be section Eight housing for the homeless until it was purchased from the city of Poughkeepsie by Marist. Somehow, its still some of the best housing! +10 exploration points!";
+		txtArea(msg);
+        if(!downCheck){
+		currentScore += 10;
+		downCheck = true;
+		}
+	}
+
+	function txtArea(msg){
+	   var text = document.getElementById("textarea");
+	   text.value = msg + "\n" + "\n" + text.value;
+	}
+
+    </script>
+	</head>
+
+<body>
+
+	<h1>Text Adventure in Marist College</h1>
+    <textarea class= "textarea" id="textarea" rows="25" cols= "60">
+
+    Welcome to Marist College.
+
+At Marist College, you will find wild red foxes, giant man-eating badgers, and angry security guards.
+
+However, keep in mind that you can recieve a lot of good loot from places such as the Hancock, the cafeteria, and Dyson.
+
+At the end of your journey, maybe you will get a business degree and end up a systems analyst that works 80 hours per week!
+
+Or maybe you will suffer an even worse fate, and end up a sports communication major that works at Burger King! Explore campus and find out.</textarea>
+
+	<br>
+    <p style="text-indent: 275px">
+      <input type="button"
+             value="North"
+             onclick="button_movement_Up();">
+    </p>
+
+    <p style="text-indent: 250px">
+      <input type="button"
+             value="West"
+             onclick="button_movement_Left();">
+
+      <input type="button"
+             value="East"
+             onclick="button_movement_Right();">
+    </p>
+
+    <p style="text-indent: 275px">
+      <input type="button"
+             value="South"
+             onclick="button_movement_Down();">
+    </p>
+    <p style="text-indent: 252px">
+      <input type="button"
+             value="Check Score"
+             onclick="alert(scoreKeep);">
+    </p>
+
+    <p class= "mailto" style="text-indent: 250px;">
+		<a href = "mailto:michael.bernstein1@marist.edu">send me an e-mail!</a>
+    </p>
+
+    <p class= "validator" style="text-indent: 250px;">
+		<a href = "http://validator.w3.org/#validate_by_input">check validator!</a>
+    </p>
+
+</body>
+</html>
