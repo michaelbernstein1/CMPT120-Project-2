@@ -1,0 +1,171 @@
+<!-- Michael Bernstein
+Programming I, M 11:00AM W 9:30AM
+Project 4 Text Adventure-->
+<html><head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta name="author" content="Michael Bernstein">
+   <title>Text Adventure</title>
+   <script src="locations.js" type="text/JavaScript">
+    var scoreKeep = 0;
+    var upCheck = 0;
+    var leftCheck = 0;
+    var rightCheck = 0;
+    var downCheck = 0;
+
+function init()
+{
+var msg = "Welcome
+to Marist College. At Marist College, you will find wild red foxes,
+giant man-eating badgers, and angry security guards.However, keep in
+mind that you can recieve a lot of good loot from places such as the
+Hancock, the cafeteria, and Dyson. At the end of your journey, maybe you
+will get a business degree and end up a systems analyst that works 80
+hours per week! Or maybe you will suffer an even worse fate, and end up a
+sports communication major that works at Burger King! Explore campus
+and find out.";
+txtArea(msg);
+}
+
+function button_movement_Up() {
+switch (upCheck)
+{
+case 0:
+	dysonLocation();
+  break;
+
+case 1:
+	fontaineLocation();
+  break;
+
+case 2:
+	annexLocation();
+  break;
+
+case 3:
+	var msg = "You can't go any further north!";
+	txtArea(msg);
+  break;
+}
+}
+
+function button_movement_Left() {
+switch (leftCheck)
+{
+case 0:
+	cafeteriaLocation();
+  break;
+
+case 1:
+	freshmenLocation();
+  break;
+
+case 2:
+	var msg = "You can't go any further west!";
+	txtArea(msg);
+  break;
+}
+}
+
+function button_movement_Right() {
+switch (rightCheck)
+{
+case 0:
+	hancockLocation();
+  break;
+
+case 1:
+	boathouseLocation();
+  break;
+
+case 2:
+	var msg = "You can't go any further east!";
+	txtArea(msg);
+  break;
+}
+}
+
+function button_movement_Down() {
+switch (rightCheck)
+{
+case 0:
+	gartlandLocation();
+  break;
+
+case 1:
+	ferntorLocation();
+  break;
+
+case 2:
+	woodsLocation();
+  break;
+
+case 3:
+	var msg = "You can't go any further south!";
+	txtArea(msg);
+  break;
+}
+}
+
+function txtArea(msg){
+var text = document.getElementById("textarea");
+text.value = msg + "\n" + "\n" + text.value;
+}
+
+function directText() {
+var directionValue = document.getElementById("direction");
+var msg = "The valid directions are N, S, E or W in upper or lower case.";
+if (directionValue.value == "N" || directionValue.value == "n")
+button_movement_Up();
+else if (directionValue.value == "S" || directionValue.value == "s")
+button_movement_Down();
+else if (directionValue.value == "E" || directionValue.value == "e")
+button_movement_Right();
+else if (directionValue.value == "W" || directionValue.value == "w")
+button_movement_Left();
+else
+txtArea(msg);
+}
+
+function helpMsg(){
+var msg = "The valid directions are N, S, E or W in upper or lower case. There are ten areas total, including Dyson, Fontaine, and Fontaine Annex to the north, Hancock and the boathouse to the east, the cafeteria and freshman dorms to the west, and Gartland, Fern Tor, and the woods in the south.";
+txtArea(msg);
+}
+
+</script>
+</head>
+<body onload="init()">
+<h1>Text Adventure in Marist College</h1>
+<textarea class="textarea" id="textarea" rows="25" cols="60">Initializing Mike's text adventure...</textarea>
+
+
+<p style="text-indent: 275px">
+<input id="northButton" value="North" onclick="button_movement_Up();" type="button">
+</p>
+
+<p style="text-indent: 250px">
+<input id="westButton" value="West" onclick="button_movement_Left();" type="button">
+<input id="eastButton" value="East" onclick="button_movement_Right();" type="button">
+</p>
+
+<p style="text-indent: 275px">
+<input id="southButton" value="South" onclick="button_movement_Down();" type="button">
+</p>
+
+<p>
+<label for="direction">Enter Direction:</label>
+<input name="direction" id="direction" maxlength="1" size="1" type="text">
+<input value="go" onclick="directText()" type="button">
+</p>
+
+<p>
+    <input value="Check Score" onclick="alert(scoreKeep);" type="button">
+</p>
+
+<p>
+    <input value="Help" onclick="helpMsg()" type="button">
+</p>
+
+<p><img src="map.jpg"></p>
+
+</body></html>
+
