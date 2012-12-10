@@ -1,0 +1,329 @@
+<!-- Michael Bernstein
+Programming I, M 11:00AM W 9:30AM
+Final Project Text Adventure-->
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="author" content="Michael Bernstein">
+		<title>Text Adventure</title>
+		<style type="text/css">
+			body {
+				margin: 0;
+				padding: 0;
+				font: 1em Cambria, serif;
+				}
+			.page {
+				margin: 5%;
+				width: 90%;
+			}
+			h1 {
+				text-align: center;
+				color: red;
+			}
+			.text {
+				float: left;
+				margin-right: 25px;
+
+			.map {
+				float: right;
+			}
+			.input1 {
+				float: left;
+				padding: 20% 0 0 10%;
+			}
+			.input2 {
+				float: right;
+				padding: 25% 10% 0 0;
+			}
+		</style>
+		<script type="text/javascript" src="locations6.js"></script>
+		<script type="text/javascript">
+			var scoreKeep = 0;
+			var upCheck = 0;
+			var leftCheck = 0;
+			var rightCheck = 0;
+			var downCheck = 0;
+			var locationArray = new Array(12);
+			var tapeArray = new Array();
+			var tapeNumber = 0;
+			var allTapesfound = false;
+			var submittedTapes = false;
+			var atFernTor = false;
+			var returnJournal = false;
+			var gameComplete = false;
+
+			function gameInit() {
+				var msg = "Welcome to the Rotunda at Marist College, freshman. This will start your journey toward a successful four years of good times followed by an unsuccessful two-year search for an entry-level job. Head north, south, east or west to explore campus. Who knows what you will find here? Just don't venture into the city of Poughkeepsie, because legend states that someone used to abduct college students and eat their brains on camera! It also states that the tapes the townie made of these events are scattered throughout campus somewhere...";
+				txtArea(msg);
+				dysonLoc = new location("N1","Dyson", "Welcome to Dyson. Here is where you will waste your most valuable four years on a degree you can use as toilet paper. +5 priority points!", "No item");
+				locationArray[0] = dysonLoc;
+				fontaineLoc = new location("N2","Fontaine", "Welcome to Fontaine. During the walk to Fontaine, you may freeze to death in the winter season. +5 priority points!", "No item");
+				locationArray[1] = fontaineLoc;
+				annexLoc = new location("N3","Fontaine Annex", "Welcome to Fontaine Annex. I'm sure there's a point to this building, but I do not know what it is. +5 priority points!", "Poughkeepsie Tape 1");
+				locationArray[2] = annexLoc;
+				cafeteriaLoc = new location("W1","Cafeteria", "You find yourself wandering west, and you accidentally stumble onto the cafeteria. The hamburgers are like hockey pucks, and the pizza is like wax paper. This is a place you want to avoid. +5 priority points!", "No item");
+				locationArray[3] = cafeteriaLoc;
+				freshmenLoc = new location("W2","Freshmen Dorms", "Welcome to the freshman dorms. Here is RA territory, where the RAs rule with an iron fist. All activities are monitored by CCTV closed-circuit recording devices, including the bathrooms. +5 priority points!", "Poughkeepsie Tape 2");
+				locationArray[4] = freshmenLoc;
+				hancockLoc = new location("E1","Hancock", "Looking to the east, you see the Hancock building. It is brand new, and full of computer science or math classes where the classes are very serious and you might actually use in your career. +5 priority points!", "No item");
+				locationArray[5] = hancockLoc;
+				boathouseLoc = new location("E2","Boathouse", "East of the Hancock building is the boathouse. I don't think Marist owns the boathouse, but here you will find rowers. Last year their coach quit because he was getting paid close to minimum wage. +5 priority points!", "Poughkeepsie Tape 3");
+				locationArray[6] = boathouseLoc;
+				gartlandLoc = new location("S1","Gartland", "Facing south, you find Gartland. Gartland used to be section Eight housing for the homeless until it was purchased from the city of Poughkeepsie by Marist. Somehow, its still some of the best housing! +5 priority points!", "No item");
+				locationArray[7] = gartlandLoc;
+				ferntorLoc = new location("S2","Fern Tor", "South of Gartland we find Fern Tor. This is un-used forested space sourrounding Marist that the college for some reason hasn't used to build new housing yet. +5 priority points!", "No item");
+				locationArray[8] = ferntorLoc;
+				woodsLoc = new location("S3","Woods", "South of Fern Tor are the deep woods which run next to the train tracks. These woods are prowled by the homeless and the undead, since security won't let them hang out in Fern Tor. +5 priority points!", "Poughkeepsie Tape 4");
+				locationArray[9] = woodsLoc;
+				annexLocfinal = new location("N4","Fontaine Annex", "A security guard welcomes you to the Marist Housing department's Paranormal Investigation Unit. On the walls are glowing vats labeled 'TKE House Jungle Juice', and what appear to be cryogenically-frozen finance professors in enormous tubes. Marist denies that any tapes exist, and removes the films from the tapes before returning the tapes to you. One of the tapes is labeled 'Future new sophomore housing.' This is where you should begin your investigation. But which location is going to be the site of the next sophomore housing development? Press the investigate button in an area location to search for clues. Don't investigate in the wrong place, however, or you could lose priority points! Security guards will write you up if they catch you snooping around where you shouldn't be.", "No item");
+				locationArray[10] = annexLocfinal;
+				annexLoccomplete = new location("N5","Fontaine Annex", "You enter the Paranormal Investigations Unit and submit the journal and blueprint. Marist denies any such material exists and doesn't even bother giving you a single priority point. But congratulations! You completed your investigation and confirmed that no Poughkeepsie tapes really exist. Your first semester ends and you have " + scoreKeep + "priority points. Your housing for next year will be...", "No item");
+				locationArray[11] = annexLoccomplete;
+
+				firstItem = new item("I1", "Poughkeepsie Tape #1", "You have found the first Poughkeepsie tape! Press the TAKE ITEM button to add it to your inventory.");
+				secondItem = new item("I2", "Poughkeepsie Tape #2", "You have found the second Poughkeepsie tape! Press the TAKE ITEM button to add it to your inventory.");
+				thirdItem = new item("I3", "Poughkeepsie Tape #3", "You have found the third Poughkeepsie tape! Press the TAKE ITEM button to add it to your inventory.");
+				fourthItem = new item("I4", "Poughkeepsie Tape #4", "You have found the fourth Poughkeepsie tape! Press the TAKE ITEM button to add it to your inventory.");
+			}
+			function button_movement_Up() {
+				if (upCheck < 3)
+					locateMatrix(0, upCheck);
+				else {
+					var msg = "You can't go any further north!";
+					txtArea(msg); }
+			}
+			function button_movement_Left() {
+				if (leftCheck < 2)
+					locateMatrix(1, leftCheck);
+				else {
+					var msg = "You can't go any further west!";
+					txtArea(msg); }
+			}
+			function button_movement_Right() {
+				if (rightCheck < 2)
+					locateMatrix(2, rightCheck);
+				else {
+					var msg = "You can't go any further east!";
+					txtArea(msg); }
+			}
+			function button_movement_Down() {
+				if (downCheck < 3)
+					locateMatrix(3, downCheck);
+				else {
+					var msg = "You can't go any further south!";
+					txtArea(msg); }
+			}
+			function locateMatrix(direction, location) {
+				var matrixArray = [ [ 'dysonLocation()', 'fontaineLocation()', 'annexLocation()' ],
+				                    [ 'cafeteriaLocation()', 'freshmenLocation()' ],
+								    [ 'hancockLocation()', 'boathouseLocation()' ],
+									[ 'gartlandLocation()', 'ferntorLocation()', 'woodsLocation()' ] ];
+				var locationFunction = matrixArray [direction][location];
+				eval(locationFunction);
+			}
+			function txtArea(msg){
+				var text = document.getElementById("textarea");
+				text.value = msg + "\n" + "\n" + text.value;
+			}
+			function directText() {
+				var directionValue = document.getElementById("direction");
+				var msg = "The valid directions are N, S, E or W in upper or lower case.";
+				switch (directionValue.value)
+				{
+					case "N":
+					case "n":
+						button_movement_Up();
+						break;
+					case "S":
+					case "s":
+						button_movement_Down();
+						break;
+					case "E":
+					case "e":
+						button_movement_Right();
+						break;
+					case "W":
+					case "w":
+						button_movement_Left();
+						break;
+					default:
+						txtArea(msg);
+				}
+			}
+			function helpMsg(){
+				var msg = "The valid directions are N, S, E or W in upper or lower case. There are ten areas total, including Dyson, Fontaine, and Fontaine Annex to the north, Hancock and the boathouse to the east, the cafeteria and freshman dorms to the west, and Gartland, Fern Tor, and the woods in the south.";
+				txtArea(msg);
+			}
+			function takeItem() {
+				var msg;
+				if (tapeNumber == 1)
+				{
+					tapeArray.push(firstItem);
+					msg = "Poughkeepsie Tape #1 has been added to your inventory!";
+				}
+				else if (tapeNumber == 2)
+				{
+					tapeArray.push(secondItem);
+					msg = "Poughkeepsie Tape #2 has been added to your inventory!";
+				}
+				else if (tapeNumber == 3)
+				{
+					tapeArray.push(thirdItem);
+					msg = "Poughkeepsie Tape #3 has been added to your inventory!";
+				}
+				else if (tapeNumber == 4)
+				{
+					tapeArray.push(fourthItem);
+					msg = "Poughkeepsie Tape #4 has been added to your inventory!";
+				}
+				else
+					msg = "No item found!.";
+				txtArea(msg);
+				tapeNumber = 0;
+				if (tapeArray.length == 4)
+					foundAllitems();
+			}
+
+			function listInventory() {
+				if (tapeArray.length == 0)
+					var msg = "There are no items in your inventory.";
+				else
+				{
+					var msg = "The following items are in your inventory:\n";
+					for (var i = 0; i < tapeArray.length; i++)
+						msg += tapeArray[i].itemName + "\n";
+				}
+				txtArea(msg);
+			}
+
+			function foundAllitems(){
+				allTapesfound = true;
+				var msg = "You found all of the Poughkeepsie Tapes hidden at Marist! According to Marist legend, " +
+						  "these tapes contain graphic films of murder and violence. You don't have a VCR, so you're " +
+						  "going to have to turn these in to the Marist Housing Investigation Unit at the Fontaine Annex.";
+				var nbutton = document.getElementById("northButton");
+				nbutton.removeAttribute('disabled');
+				upCheck = 2;
+				txtArea(msg);
+			}
+
+			function investigateArea() {
+			if (atFernTor == true){
+				var msg = "Half-way buried in one of the trails is a journal in a lockbox. The journal belonged to a " +
+				          "project manager for Marist's administration. It reads: 'I finally stole back those embarassing " +
+						  "videos from the Marist Class of 71 ten-year reunion party. That'll teach those damn " +
+						  "environmental science professors not to blackmail me! I don't care how much they love Fern Tor, " +
+						  "half of our upper-classmen can't afford or recieve housing because we are protecting this useless " +
+						  "trail. Now time to stash these videos somewhere and submit this construction plan to the review " +
+						  "panel and get things underway.' Underneath the journal is a blueprint of Fern Dorm. Maybe bringing " +
+						  "the blueprint to the Annex will earn you some priority points!";
+				txtArea(msg);
+				returnJournal = true;
+				var sbutton = document.getElementById("southButton");
+				sbutton.setAttribute('disabled', 'disabled');
+				var ebutton = document.getElementById("eastButton");
+				ebutton.setAttribute('disabled', 'disabled');
+				var wbutton = document.getElementById("westButton");
+				wbutton.setAttribute('disabled', 'disabled');
+				var ibutton = document.getElementById("investigateBtn");
+				ibutton.setAttribute('disabled', 'disabled');
+				upCheck = 2;
+			}
+			else {
+				msg = "There are no clues in the area. A security guard sees you snooping and suspects you're up to " +
+				      "something. You lose 5 priority points for loitering."
+				txtArea(msg);
+				scoreKeep -= 5;
+			}
+		}
+
+			function gameFinished(){
+			if (scoreKeep > 44)
+				msg = "Foy! Congratulations. This is the best housing you could have earned.";
+			if (scoreKeep > 30 && scoreKeep < 44)
+				msg = "Gartland! Congratulations. This is a good housing option. At least you have a kitchen."
+			if (scoreKeep < 30)
+				msg = "Midrise! Congratulations. This is the worst housing option. Shouldn't have been written up all those " +
+					  "times while investigating."
+			txtArea(msg);
+			}
+
+			function location(locId, locName, locDesc, locItem) {
+				this.locationId = locId;
+				this.locationName = locName;
+				this.locationDesc = locDesc;
+				this.locationItem = locItem;
+				this.toSring = function() {
+					var retVal = "";
+					retVal = "[Location]" + "\n" +
+					         "ID: " + this.locationId + "\n" +
+							 "Name: " + this.locationName + "\n" +
+							 "Description: " + this.locationDesc + "\n" +
+							 "Item: " + this.locationItem + "\n";
+					return retVal;
+					}
+			}
+			function item(itmId, itmName, itmDesc) {
+				this.itemId = itmId;
+				this.itemName = itmName;
+				this.itemDesc = itmDesc;
+				this.toSring = function() {
+					var retVal = "";
+					retVal =  "[Item]" + "\n" +
+					         "ID: " + this.itemId + "\n" +
+							 "Name: " + this.itemName + "\n" +
+							 "Description: " + this.itemDesc + "\n";
+					return retVal;
+					}
+			}
+		</script>
+	</head>
+	<body onload="gameInit()">
+		<div class="page">
+			<h1>Text Adventure in Marist College</h1>
+			<div class="text">
+				<textarea class="textarea" id="textarea" rows="25" cols="60">Initializing Mike's text adventure...</textarea>
+			</div>
+			<div class="map">
+				<img src="CampusMap.jpg" alt="campus map" title="campus map" height="211" width="448">
+			</div>
+			<div class="buttons">
+				<div class="input1">
+					<p style="text-indent: 275px">
+						<input id="northButton" value="North" onclick="button_movement_Up();" type="button">
+					</p>
+					<p style="text-indent: 250px">
+						<input id="westButton" value="West" onclick="button_movement_Left();" type="button">
+						<input id="eastButton" value="East" onclick="button_movement_Right();" type="button">
+					</p>
+					<p style="text-indent: 275px">
+						<input id="southButton" value="South" onclick="button_movement_Down();" type="button">
+					</p>
+					<p>
+						<label for="direction">Enter Direction:</label>
+						<input name="direction" id="direction" maxlength="1" size="1" type="text">
+						<input value="go" onclick="directText()" type="button">
+					</p>
+
+				</div>
+				<div class="input2">
+					<p>
+						<input value="Take Item" type="button" onclick="takeItem()">
+					</p>
+					<p>
+						<input value="List Inventory" type="button" onclick="listInventory()">
+					</p>
+					<p>
+						<input value="Check Priority Points" onclick="alert(scoreKeep);" type="button">
+					</p>
+					<p>
+						<input value="Help" onclick="helpMsg()" type="button">&nbsp;&nbsp;&nbsp;&nbsp;
+						<input id="investigateBtn" value="Investigate" onclick="investigateArea();" type="button"
+						        disabled="disabled">
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
